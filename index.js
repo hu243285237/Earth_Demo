@@ -23,7 +23,7 @@ function initCamera() {
     camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
     camera.position.x = 0;
     camera.position.y = 50;
-    camera.position.z = 1000;
+    camera.position.z = 1200;
 }
 
 // 初始化场景
@@ -59,10 +59,11 @@ function initObject() {
     });
 }
 
-// 初始化鼠标事件
-var mouse;
-function initMouseEvent() {
-    mouse = { delX: 0, delY: 0 };
+// 初始化鼠标点击事件
+var mouse = {};
+function initMouseButtonEvent() {
+    mouse.delX = 0;
+    mouse.delY = 0;
     let isMouseDown = false;
     let lastFramePoint = { x: 0, y: 0 };
     window.addEventListener("mousedown", e => {
@@ -82,6 +83,22 @@ function initMouseEvent() {
     });
 }
 
+// 初始化鼠标滚轮事件
+function initMouseRollerEvent() {
+    mouse.delRoller = 0;
+    function scroll(e) {
+        // 兼容 IE 谷歌 火狐
+        e = e || window.event;
+        e.wheelDelta = e.wheelDelta || e.detail;
+        mouse.delRoller += e.wheelDelta / 10;
+    }
+    // 添加事件
+    if (document.addEventListener) { // 火狐
+        document.addEventListener("DOMMouseScroll", scroll);
+    }
+    window.onmousewheel = scroll; // IE 谷歌
+}
+
 // 实时渲染
 function render() {
     update();
@@ -97,7 +114,8 @@ function threeStart() {
     initScene();
     initLight();
     initObject();
-    initMouseEvent();
+    initMouseButtonEvent();
+    initMouseRollerEvent();
     render();
 }
 
@@ -111,4 +129,13 @@ function update() {
     // 旋转量逐渐减少 使之有缓冲效果
     mouse.delX = mouse.delX > 0 ? mouse.delX / 1.1 : 0;
     mouse.delY = mouse.delY > 0 ? mouse.delY / 1.1 : 0;
+    // 滚轮移动摄像机
+    mouse.delRoller /= 1.1;
+    camera.position.z = THREE.Math.lerp(camera.position.z, camera.position.z - mouse.delRoller, 0.25);
+    // 限制摄像机的范围
+    if (camera.position.z > 1500) {
+        camera.position.z = 1500;
+    } else if (camera.position.z < 800) {
+        camera.position.z = 800;
+    }
 }
