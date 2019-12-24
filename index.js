@@ -7,12 +7,12 @@
 // 初始化渲染器
 var renderer;
 function initThree() {
-    width = document.getElementById("canvas-frame").clientWidth;
-    height = document.getElementById("canvas-frame").clientHeight;
+    width = window.innerWidth;
+    height = window.innerHeight;
     renderer = new THREE.WebGLRenderer({
         antialias: true
     });
-    renderer.setSize(width, height);
+    renderer.setSize(window.innerWidth, height);
     document.getElementById("canvas-frame").appendChild(renderer.domElement);
     renderer.setClearColor(0xFFFFFF, 1.0);
 }
@@ -22,7 +22,7 @@ var camera;
 function initCamera() {
     camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
     camera.position.x = 0;
-    camera.position.y = 50;
+    camera.position.y = 0;
     camera.position.z = 1200;
 }
 
@@ -30,7 +30,7 @@ function initCamera() {
 var scene;
 function initScene() {
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
+    scene.background = new THREE.Color(0xFFFFFF);
 }
 
 // 初始化灯光
@@ -57,6 +57,15 @@ function initObject() {
             scene.add(object);
         });
     });
+}
+
+// 画板自适应屏幕
+function initResizeScreen() {
+    window.onresize = function () {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+    }
 }
 
 // 初始化鼠标点击事件
@@ -114,6 +123,7 @@ function threeStart() {
     initScene();
     initLight();
     initObject();
+    initResizeScreen();
     initMouseButtonEvent();
     initMouseRollerEvent();
     render();
