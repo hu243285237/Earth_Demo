@@ -15,8 +15,8 @@ function initThree() {
     });
     renderer.setSize(window.innerWidth, height);
     document.getElementById("canvas-frame").appendChild(renderer.domElement);
-    //renderer.setClearColor(0xFFFFFF, 1.0);
-    //renderer.setClearAlpha(0.5);
+    renderer.setClearColor(0xFFFFFF, 1.0);
+    renderer.setClearAlpha(0.5);
 }
 
 // 初始化摄像机
@@ -32,7 +32,7 @@ function initCamera() {
 var scene;
 function initScene() {
     scene = new THREE.Scene();
-    //scene.background = new THREE.Color(0xFFFFFF);
+    scene.background = new THREE.Color(0xFFFFFF);
 }
 
 // 初始化灯光
