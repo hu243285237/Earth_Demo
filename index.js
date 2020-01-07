@@ -64,11 +64,14 @@ function initObject() {
             earth = object;
             scene.add(object);
         }, function(xhr) {
-            prompt.innerText = "加载模型中...";
-            console.log(xhr);
+            prompt.innerText = `加载模型中，${(xhr.loaded/xhr.total).toFixed(2)*100}%...`;
         }, function(err) {
             prompt.innerText = "加载模型出错！";
         });
+    }, function(xhr) {
+        prompt.innerText = `加载材质中，${(xhr.loaded/xhr.total).toFixed(2)*100}%...`;
+    }, function(err) {
+        prompt.innerText = "加载材质贴图出错！";
     });
 }
 
