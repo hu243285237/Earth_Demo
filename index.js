@@ -57,21 +57,19 @@ function initObject() {
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(material);
         objLoader.load("./models/earth/earth.obj", function(object) {
-            prompt.innerText = "模型加载完毕";
-            console.log(object);
-            console.log(material);
+            prompt.innerText = "模型加载完毕，加载贴图中...";
             object.position.set(0, 0, 0);
             earth = object;
             scene.add(object);
         }, function(xhr) {
-            prompt.innerText = `加载模型中，${(xhr.loaded/xhr.total).toFixed(2)*100}%...`;
+            prompt.innerText = `加载模型中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`;
         }, function(err) {
             prompt.innerText = "加载模型出错！";
         });
     }, function(xhr) {
-        prompt.innerText = `加载材质中，${(xhr.loaded/xhr.total).toFixed(2)*100}%...`;
+        prompt.innerText = `加载材质中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`;
     }, function(err) {
-        prompt.innerText = "加载材质贴图出错！";
+        prompt.innerText = "加载材质出错！";
     });
 }
 
