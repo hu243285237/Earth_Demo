@@ -4,6 +4,12 @@ html, body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    text-align: center;
+}
+
+#prompt {
+    padding: 10px 0px;
+    border-bottom: 1px solid #eee;
 }
 
 #canvas-frame {

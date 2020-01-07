@@ -4,14 +4,16 @@
     否则会有跨域的问题
 */
 
+// 提示文本框
+var prompt = document.getElementById("prompt");
+
 // 初始化渲染器
 var renderer;
 function initThree() {
     width = window.innerWidth;
     height = window.innerHeight;
     renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true
+        antialias: true
     });
     renderer.setSize(window.innerWidth, height);
     document.getElementById("canvas-frame").appendChild(renderer.domElement);
@@ -50,13 +52,22 @@ var earth;
 function initObject() {
     var mtlLoader = new THREE.MTLLoader();
     mtlLoader.load("./models/earth/earth.mtl", function(material) {
+        prompt.innerText = "材质加载完毕，准备加载模型...";
         material.preload();
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(material);
         objLoader.load("./models/earth/earth.obj", function(object) {
+            prompt.innerText = "模型加载完毕";
+            console.log(object);
+            console.log(material);
             object.position.set(0, 0, 0);
             earth = object;
             scene.add(object);
+        }, function(xhr) {
+            prompt.innerText = "加载模型中...";
+            console.log(xhr);
+        }, function(err) {
+            prompt.innerText = "加载模型出错！";
         });
     });
 }
