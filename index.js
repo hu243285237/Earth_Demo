@@ -53,54 +53,46 @@ function initObject() {
     var mtlLoader = new THREE.MTLLoader();
     mtlLoader.load("./models/earth/earth.mtl", function(material) {
         prompt.innerText = "材质加载完毕，准备加载模型...";
-        //material.preload();
-        material.loadTexture("./models/earth/4096_earth.jpg", undefined, function(texture) {
-            console.log("贴图4096_earth.jpg加载完毕");
-        }, function(xhr) {
-            console.log(`加载贴图4096_earth.jpg中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`);
-        }, function(err) {
-            console.log("加载贴图出错！");
-        });
-        material.loadTexture("./models/earth/4096_bump.jpg", undefined, function(texture) {
-            console.log("贴图4096_bump.jpg加载完毕");
-        }, function(xhr) {
-            console.log(`加载贴图4096_bump.jpg中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`);
-        }, function(err) {
-            console.log("加载贴图出错！");
-        });
-        material.loadTexture("./models/earth/4096_clouds.jpg", undefined, function(texture) {
-            console.log("贴图4096_clouds.jpg加载完毕");
-        }, function(xhr) {
-            console.log(`加载贴图4096_clouds.jpg中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`);
-        }, function(err) {
-            console.log("加载贴图出错！");
-        });
-        material.loadTexture("./models/earth/4096_night_lights.jpg", undefined, function(texture) {
-            console.log("贴图4096_night_lights.jpg加载完毕");
-        }, function(xhr) {
-            console.log(`加载贴图4096_night_lights.jpg中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`);
-        }, function(err) {
-            console.log("加载贴图出错！");
-        });
-        material.loadTexture("./models/earth/4096_normal.jpg", undefined, function(texture) {
-            console.log("贴图4096_normal.jpg加载完毕");
-        }, function(xhr) {
-            console.log(`加载贴图4096_normal.jpg中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`);
-        }, function(err) {
-            console.log("加载贴图出错！");
-        });
-        var objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials(material);
-        objLoader.load("./models/earth/earth.obj", function(object) {
-            prompt.innerText = "模型加载完毕，加载贴图中...";
-            object.position.set(0, 0, 0);
-            earth = object;
-            scene.add(object);
-        }, function(xhr) {
-            prompt.innerText = `加载模型中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`;
-        }, function(err) {
-            prompt.innerText = "加载模型出错！";
-        });
+        // 按顺序加载物体和贴图
+        Promise.resolve().then(() => { return loadObj("./models/earth/earth.obj", "地球"); })
+        .then(() => { return loadTexture("./models/earth/4096_earth.jpg", "4096_earth"); })
+        .then(() => { return loadTexture("./models/earth/4096_bump.jpg", "4096_bump"); })
+        .then(() => { return loadTexture("./models/earth/4096_normal.jpg", "4096_normal"); })
+        .then(() => { return loadTexture("./models/earth/4096_night_lights.jpg", "4096_night_lights"); })
+        .then(() => { return loadTexture("./models/earth/4096_clouds.jpg", "4096_clouds"); });
+        // 加载物体的 Promise 方法
+        function loadObj(url, name) {
+            return new Promise((resolve, reject) => {
+                var objLoader = new THREE.OBJLoader();
+                objLoader.setMaterials(material);
+                objLoader.load(url, function(object) {
+                    resolve();
+                    prompt.innerText = `${name}模型加载完毕！`;
+                    object.position.set(0, 0, 0);
+                    earth = object;
+                    scene.add(object);
+                }, function(xhr) {
+                    prompt.innerText = `加载模型中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`;
+                }, function(err) {
+                    reject();
+                    prompt.innerText = "加载模型出错！";
+                });
+            });
+        }
+        // 加载贴图的 Promise 方法
+        function loadTexture(url, name) {
+            return new Promise((resolve, reject) => {
+                mtlLoader.load(url, function(texture) {
+                    resolve();
+                    prompt.innerText = `贴图${name}加载完毕`;
+                }, function(xhr) {
+                    prompt.innerText = `加载贴图${name}中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`;
+                }, function(err) {
+                    reject();
+                    prompt.innerText = "加载贴图出错！";
+                });
+            });
+        }
     }, function(xhr) {
         prompt.innerText = `加载材质中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`;
     }, function(err) {
