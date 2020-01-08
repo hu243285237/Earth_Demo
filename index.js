@@ -59,7 +59,8 @@ function initObject() {
         .then(() => { return loadTexture("./models/earth/4096_bump.jpg", "4096_bump"); })
         .then(() => { return loadTexture("./models/earth/4096_normal.jpg", "4096_normal"); })
         .then(() => { return loadTexture("./models/earth/4096_night_lights.jpg", "4096_night_lights"); })
-        .then(() => { return loadTexture("./models/earth/4096_clouds.jpg", "4096_clouds"); });
+        .then(() => { return loadTexture("./models/earth/4096_clouds.jpg", "4096_clouds"); })
+        .then(() => { prompt.innerText = "所有资源已加载完毕"; });
         // 加载物体的 Promise 方法
         function loadObj(url, name) {
             return new Promise((resolve, reject) => {
@@ -67,7 +68,7 @@ function initObject() {
                 objLoader.setMaterials(material);
                 objLoader.load(url, function(object) {
                     resolve();
-                    prompt.innerText = `${name}模型加载完毕！`;
+                    prompt.innerText = `${name}模型加载完毕，准备加载贴图...`;
                     object.position.set(0, 0, 0);
                     earth = object;
                     scene.add(object);
@@ -84,7 +85,7 @@ function initObject() {
             return new Promise((resolve, reject) => {
                 mtlLoader.load(url, function(texture) {
                     resolve();
-                    prompt.innerText = `贴图${name}加载完毕`;
+                    prompt.innerText = `贴图${name}加载完毕，准备加载下一张贴图...`;
                 }, function(xhr) {
                     prompt.innerText = `加载贴图${name}中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`;
                 }, function(err) {
