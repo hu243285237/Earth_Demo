@@ -53,7 +53,42 @@ function initObject() {
     var mtlLoader = new THREE.MTLLoader();
     mtlLoader.load("./models/earth/earth.mtl", function(material) {
         prompt.innerText = "材质加载完毕，准备加载模型...";
-        material.preload();
+        //material.preload();
+        material.loadTexture("./models/earth/4096_earth.jpg", undefined, function(texture) {
+            console.log("贴图4096_earth.jpg加载完毕");
+        }, function(xhr) {
+            console.log(`加载贴图4096_earth.jpg中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`);
+        }, function(err) {
+            console.log("加载贴图出错！");
+        });
+        material.loadTexture("./models/earth/4096_bump.jpg", undefined, function(texture) {
+            console.log("贴图4096_bump.jpg加载完毕");
+        }, function(xhr) {
+            console.log(`加载贴图4096_bump.jpg中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`);
+        }, function(err) {
+            console.log("加载贴图出错！");
+        });
+        material.loadTexture("./models/earth/4096_clouds.jpg", undefined, function(texture) {
+            console.log("贴图4096_clouds.jpg加载完毕");
+        }, function(xhr) {
+            console.log(`加载贴图4096_clouds.jpg中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`);
+        }, function(err) {
+            console.log("加载贴图出错！");
+        });
+        material.loadTexture("./models/earth/4096_night_lights.jpg", undefined, function(texture) {
+            console.log("贴图4096_night_lights.jpg加载完毕");
+        }, function(xhr) {
+            console.log(`加载贴图4096_night_lights.jpg中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`);
+        }, function(err) {
+            console.log("加载贴图出错！");
+        });
+        material.loadTexture("./models/earth/4096_normal.jpg", undefined, function(texture) {
+            console.log("贴图4096_normal.jpg加载完毕");
+        }, function(xhr) {
+            console.log(`加载贴图4096_normal.jpg中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`);
+        }, function(err) {
+            console.log("加载贴图出错！");
+        });
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(material);
         objLoader.load("./models/earth/earth.obj", function(object) {
