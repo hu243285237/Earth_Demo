@@ -38,11 +38,12 @@ function initScene() {
 }
 
 // 初始化灯光
-var light;
+var light1;
+var light2;
 function initLight() {
     light1 = new THREE.AmbientLight(0xFFFFFF, 10.0, 0);
-    light2 = new THREE.DirectionalLight(0xFFFFFF, 12.0, 0);
-    light2.position.set(100, 100, 200);
+    light2 = new THREE.DirectionalLight(0xFFFFFF, 15);
+    light2.position.set(0, 0, 100);
     scene.add(light1);
     scene.add(light2);
 }
@@ -73,7 +74,7 @@ function initObject() {
                     earth = object;
                     scene.add(object);
                 }, function(xhr) {
-                    prompt.innerText = `加载模型中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`;
+                    prompt.innerText = `加载${name}模型中，${((xhr.loaded/xhr.total)*100).toFixed(0)}%...`;
                 }, function(err) {
                     reject();
                     prompt.innerText = "加载模型出错！";
@@ -172,6 +173,7 @@ function threeStart() {
 }
 
 // update 每帧逻辑代码
+var t = 0;
 function update() {
     // 如果模型还未加载出来 则返回
     if (!earth) return;
@@ -190,4 +192,8 @@ function update() {
     } else if (camera.position.z < 800) {
         camera.position.z = 800;
     }
+    t++;
+    //light2.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), t/100);
+    //light2.lookAt(earth.position);
+    prompt.innerText = `${light2.rotation.z}`;
 }
