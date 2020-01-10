@@ -1,37 +1,45 @@
-## Welcome to GitHub Pages
+## 地球模型展示
 
-You can use the [editor on GitHub](https://github.com/hu243285237/Earth_Demo/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+使用 Threejs 展示地球模型的 Demo
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+贴图比较大，加载时间会比较久，请耐心等待
 
-### Markdown
+## 演示地址
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+https://hu243285237.github.io/Earth_Demo/
 
-```markdown
-Syntax highlighted code block
+## 功能点
 
-# Header 1
-## Header 2
-### Header 3
+模型的加载和显示
 
-- Bulleted
-- List
+加载进度的实时显示
 
-1. Numbered
-2. List
+贴图按顺序加载（最主要的贴图最先加载）
 
-**Bold** and _Italic_ and `Code` text
+自适应屏幕（当缩放浏览器时，保持模型在正中间）
 
-[Link](url) and ![Image](src)
-```
+鼠标拖拽物体旋转（并且停止旋转时有缓冲效果）
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+滚轮缩放物体尺寸（并且限制缩放尺寸大小）
 
-### Jekyll Themes
+云层自旋转
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/hu243285237/Earth_Demo/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## 插件
 
-### Support or Contact
+three.min.js ———— threejs 插件
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+OBJLoader.js ———— 用于加载物体
+
+MTLLoader.js ———— 用于加载材质和贴图
+
+## 模型来源
+
+https://www.cgmodel.com/model-204627.html
+
+更改了贴图的精度，所有贴图从 4096 改为 2048，以加快加载速度
+
+## 部署
+
+需要本地搭服务才能正常运行，比如 httpserver
+
+直接打开 html 无法正常运行
