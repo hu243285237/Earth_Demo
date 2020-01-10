@@ -61,7 +61,7 @@ function initObject() {
         .then(() => { return loadTexture("./models/earth/4096_normal.jpg", "4096_normal"); })
         .then(() => { return loadTexture("./models/earth/4096_night_lights.jpg", "4096_night_lights"); })
         .then(() => { return loadTexture("./models/earth/4096_clouds.jpg", "4096_clouds"); })
-        .then(() => { prompt.innerText = "所有资源已加载完毕"; });
+        .then(() => { prompt.innerText = "所有资源已加载完毕，鼠标拖动可旋转，滚轮可缩放"; });
         // 加载物体的 Promise 方法
         function loadObj(url, name) {
             return new Promise((resolve, reject) => {
@@ -173,7 +173,6 @@ function threeStart() {
 }
 
 // update 每帧逻辑代码
-var t = 0;
 function update() {
     // 如果模型还未加载出来 则返回
     if (!earth) return;
@@ -192,8 +191,8 @@ function update() {
     } else if (camera.position.z < 800) {
         camera.position.z = 800;
     }
-    t++;
-    //light2.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), t/100);
-    //light2.lookAt(earth.position);
-    prompt.innerText = `${light2.rotation.z}`;
+    // 增大云层缩放 以防止旋转时穿模
+    earth.children[1].scale.set(1.01, 1.01, 1.01);
+    // 云层自旋转
+    earth.children[1].rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), 0.002);
 }
